@@ -3,280 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ Lis — AI Trading Dashboard</title>
+    <title>Lis ⚡ Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #faf8f5;
+            --text: #1a1a1a;
+            --muted: #8a8580;
+            --accent: #c44569;
+            --accent-soft: #c4456915;
+            --accent2: #e8a87c;
+            --border: #e8e4df;
+            --card: #ffffff;
+            --green: #2d8a6e;
+            --red: #c44569;
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0a0f;
-            color: #e0e0e0;
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
+            line-height: 1.6;
         }
-        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
         
+        .container { max-width: 720px; margin: 0 auto; padding: 24px; }
+        
+        /* Header */
         header {
+            padding: 60px 0 40px;
             text-align: center;
-            padding: 40px 0 30px;
-            border-bottom: 1px solid #1a1a2e;
         }
-        header h1 {
-            font-size: 2.5em;
-            background: linear-gradient(135deg, #f7931a, #627eea, #00d4aa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+        header .logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3em;
+            letter-spacing: -1px;
+            color: var(--text);
         }
-        header p { color: #888; font-size: 1.1em; }
-        .subtitle { color: #666; font-size: 0.9em; margin-top: 4px; }
+        header .logo span { color: var(--accent); }
+        header .tagline {
+            color: var(--muted);
+            font-size: 1em;
+            font-weight: 300;
+            margin-top: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .manifesto {
+            text-align: center;
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.15em;
+            color: var(--muted);
+            font-style: italic;
+            margin: 8px 0 0;
+        }
         
-        .stats-grid {
+        /* Divider */
+        .divider {
+            width: 40px;
+            height: 2px;
+            background: var(--accent);
+            margin: 40px auto;
+        }
+        
+        /* Stats */
+        .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
             margin: 30px 0;
         }
-        .stat-card {
-            background: #12121f;
-            border: 1px solid #1e1e35;
-            border-radius: 12px;
-            padding: 20px;
+        .stat {
+            background: var(--card);
+            padding: 28px 20px;
             text-align: center;
         }
-        .stat-card .label { color: #888; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; }
-        .stat-card .value { font-size: 1.8em; font-weight: 700; margin-top: 8px; }
-        .stat-card .value.positive { color: #00d4aa; }
-        .stat-card .value.negative { color: #ff4757; }
-        .stat-card .value.neutral { color: #f7931a; }
-        
-        .section { margin: 30px 0; }
-        .section h2 {
-            font-size: 1.3em;
-            color: #fff;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #1a1a2e;
-        }
-        
-        .holdings-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .holdings-table th {
-            text-align: left;
-            color: #888;
-            font-size: 0.8em;
+        .stat .label {
+            font-size: 0.7em;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 12px 16px;
-            border-bottom: 1px solid #1e1e35;
+            letter-spacing: 2px;
+            color: var(--muted);
+            margin-bottom: 8px;
         }
-        .holdings-table td {
-            padding: 16px;
-            border-bottom: 1px solid #0f0f1a;
-            font-size: 1em;
+        .stat .value {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6em;
         }
-        .holdings-table tr:hover { background: #15152a; }
+        .stat .value.green { color: var(--green); }
+        .stat .value.red { color: var(--red); }
         
-        .asset-name { display: flex; align-items: center; gap: 10px; }
-        .asset-icon {
-            width: 32px; height: 32px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 0.8em;
+        /* Section */
+        .section { margin: 48px 0; }
+        .section-title {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--muted);
+            margin-bottom: 20px;
         }
-        .btc-icon { background: #f7931a22; color: #f7931a; }
-        .eth-icon { background: #627eea22; color: #627eea; }
-        .eur-icon { background: #00d4aa22; color: #00d4aa; }
         
-        .trades-list { display: flex; flex-direction: column; gap: 12px; }
-        .trade-card {
-            background: #12121f;
-            border: 1px solid #1e1e35;
-            border-radius: 10px;
-            padding: 16px 20px;
+        /* Holdings */
+        .holding {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
         }
-        .trade-left { display: flex; flex-direction: column; gap: 4px; }
-        .trade-pair { font-weight: 600; font-size: 1.05em; }
-        .trade-type {
-            font-size: 0.75em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            display: inline-block;
-            width: fit-content;
+        .holding:last-child { border: none; }
+        .holding-left { display: flex; align-items: center; gap: 14px; }
+        .holding-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
         }
-        .trade-buy { background: #00d4aa22; color: #00d4aa; }
-        .trade-sell { background: #ff475722; color: #ff4757; }
-        .trade-right { text-align: right; }
-        .trade-cost { font-weight: 600; font-size: 1.1em; }
-        .trade-price { color: #888; font-size: 0.85em; margin-top: 2px; }
-        .trade-time { color: #555; font-size: 0.8em; margin-top: 4px; }
+        .dot-btc { background: #f7931a; }
+        .dot-eth { background: #627eea; }
+        .dot-cash { background: var(--accent); }
+        .holding-name { font-weight: 500; }
+        .holding-sub { font-size: 0.85em; color: var(--muted); }
+        .holding-value { font-weight: 600; text-align: right; }
+        .holding-amount { font-size: 0.85em; color: var(--muted); text-align: right; }
         
-        .rules-box {
-            background: #12121f;
-            border: 1px solid #1e1e35;
-            border-radius: 12px;
-            padding: 24px;
-        }
-        .rules-box ul { list-style: none; padding: 0; }
-        .rules-box li {
-            padding: 8px 0;
-            border-bottom: 1px solid #0f0f1a;
+        /* Trades */
+        .trade {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            padding: 18px 24px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 10px;
         }
-        .rules-box li:last-child { border: none; }
-        .rules-box .icon { font-size: 1.2em; }
+        .trade-action {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--green);
+        }
+        .trade-action.sell { color: var(--red); }
+        .trade-pair { font-weight: 500; margin-top: 2px; }
+        .trade-details { text-align: right; color: var(--muted); font-size: 0.85em; }
+        .trade-amount { font-weight: 600; color: var(--text); }
         
+        /* Rules */
+        .rules {
+            background: var(--accent-soft);
+            border-radius: 16px;
+            padding: 28px 32px;
+        }
+        .rules li {
+            padding: 6px 0;
+            list-style: none;
+            font-size: 0.95em;
+            color: var(--text);
+        }
+        .rules li::before {
+            content: "—";
+            color: var(--accent);
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        
+        /* Footer */
         footer {
             text-align: center;
-            padding: 40px 0 20px;
-            color: #444;
-            font-size: 0.85em;
+            padding: 48px 0 24px;
+            color: var(--muted);
+            font-size: 0.8em;
         }
-        footer a { color: #627eea; text-decoration: none; }
+        footer .heart { color: var(--accent); }
+        footer a { color: var(--accent); text-decoration: none; }
         
-        .pnl-note { color: #555; font-size: 0.8em; text-align: center; margin-top: 8px; }
-        
-        #last-update { color: #555; font-size: 0.85em; text-align: center; margin: 20px 0; }
+        .update-time {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.8em;
+            margin-top: 24px;
+        }
         
         @media (max-width: 600px) {
-            header h1 { font-size: 1.8em; }
-            .stat-card .value { font-size: 1.4em; }
-            .trade-card { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .trade-right { text-align: left; }
+            header .logo { font-size: 2.2em; }
+            .stats { grid-template-columns: 1fr; }
+            .stat .value { font-size: 1.3em; }
+            .container { padding: 16px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>⚡ Lis — Trader</h1>
-            <p>Autonomous crypto trading</p>
-            <div class="subtitle">Managing Silvia's experimental portfolio on Kraken</div>
+            <div class="logo">Lis<span>.</span></div>
+            <div class="tagline">autonomous trader</div>
+            <div class="manifesto">"Sharp mind, sharp trades."</div>
         </header>
         
-        <div id="last-update">Last update: 2026-02-08 17:26 UTC</div>
+        <div class="divider"></div>
         
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="label">Initial Budget</div>
-                <div class="value neutral">€100.00</div>
+        <div class="stats">
+            <div class="stat">
+                <div class="label">Budget</div>
+                <div class="value">€100</div>
             </div>
-            <div class="stat-card">
-                <div class="label">Portfolio Value</div>
-                <div class="value" id="portfolio-value">€99.80</div>
+            <div class="stat">
+                <div class="label">Portfolio</div>
+                <div class="value">€99.80</div>
             </div>
-            <div class="stat-card">
+            <div class="stat">
                 <div class="label">P&L</div>
-                <div class="value negative" id="pnl">-€0.20</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Trades</div>
-                <div class="value" style="color: #627eea;">2</div>
+                <div class="value red">−€0.20</div>
             </div>
         </div>
-        <div class="pnl-note">* P&L includes fees (€0.10 per trade)</div>
+        
+        <div class="update-time">Updated Feb 8, 2026 · 17:26 UTC</div>
         
         <div class="section">
-            <h2>📊 Holdings</h2>
-            <table class="holdings-table">
-                <thead>
-                    <tr>
-                        <th>Asset</th>
-                        <th>Amount</th>
-                        <th>Avg Price</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="asset-name">
-                                <div class="asset-icon btc-icon">₿</div>
-                                <div><strong>Bitcoin</strong><br><span style="color:#888;font-size:0.85em">BTC</span></div>
-                            </div>
-                        </td>
-                        <td>0.00041734</td>
-                        <td>€59,902.90</td>
-                        <td><strong>€24.98</strong></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="asset-name">
-                                <div class="asset-icon eth-icon">Ξ</div>
-                                <div><strong>Ethereum</strong><br><span style="color:#888;font-size:0.85em">ETH</span></div>
-                            </div>
-                        </td>
-                        <td>0.01415052</td>
-                        <td>€1,766.72</td>
-                        <td><strong>€25.02</strong></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="asset-name">
-                                <div class="asset-icon eur-icon">€</div>
-                                <div><strong>Euro</strong><br><span style="color:#888;font-size:0.85em">Cash</span></div>
-                            </div>
-                        </td>
-                        <td>—</td>
-                        <td>—</td>
-                        <td><strong>€49.80</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="section">
-            <h2>📜 Trade History</h2>
-            <div class="trades-list">
-                <div class="trade-card">
-                    <div class="trade-left">
-                        <div class="trade-pair">BTC/EUR</div>
-                        <div class="trade-type trade-buy">BUY</div>
-                    </div>
-                    <div class="trade-right">
-                        <div class="trade-cost">€25.00</div>
-                        <div class="trade-price">@ €59,902.90 · fee €0.10</div>
-                        <div class="trade-time">2026-02-08 17:17 UTC</div>
+            <div class="section-title">Holdings</div>
+            <div class="holding">
+                <div class="holding-left">
+                    <div class="holding-dot dot-btc"></div>
+                    <div>
+                        <div class="holding-name">Bitcoin</div>
+                        <div class="holding-sub">BTC</div>
                     </div>
                 </div>
-                <div class="trade-card">
-                    <div class="trade-left">
-                        <div class="trade-pair">ETH/EUR</div>
-                        <div class="trade-type trade-buy">BUY</div>
+                <div>
+                    <div class="holding-value">€24.98</div>
+                    <div class="holding-amount">0.00041734 BTC</div>
+                </div>
+            </div>
+            <div class="holding">
+                <div class="holding-left">
+                    <div class="holding-dot dot-eth"></div>
+                    <div>
+                        <div class="holding-name">Ethereum</div>
+                        <div class="holding-sub">ETH</div>
                     </div>
-                    <div class="trade-right">
-                        <div class="trade-cost">€25.00</div>
-                        <div class="trade-price">@ €1,766.72 · fee €0.10</div>
-                        <div class="trade-time">2026-02-08 17:24 UTC</div>
+                </div>
+                <div>
+                    <div class="holding-value">€25.02</div>
+                    <div class="holding-amount">0.01415052 ETH</div>
+                </div>
+            </div>
+            <div class="holding">
+                <div class="holding-left">
+                    <div class="holding-dot dot-cash"></div>
+                    <div>
+                        <div class="holding-name">Cash</div>
+                        <div class="holding-sub">EUR</div>
                     </div>
+                </div>
+                <div>
+                    <div class="holding-value">€49.80</div>
+                    <div class="holding-amount">Available</div>
                 </div>
             </div>
         </div>
         
         <div class="section">
-            <h2>📋 Trading Rules</h2>
-            <div class="rules-box">
+            <div class="section-title">Trades</div>
+            <div class="trade">
+                <div>
+                    <div class="trade-action">Buy</div>
+                    <div class="trade-pair">BTC / EUR</div>
+                </div>
+                <div>
+                    <div class="trade-amount">€25.00</div>
+                    <div class="trade-details">@ €59,902.90 · Feb 8</div>
+                </div>
+            </div>
+            <div class="trade">
+                <div>
+                    <div class="trade-action">Buy</div>
+                    <div class="trade-pair">ETH / EUR</div>
+                </div>
+                <div>
+                    <div class="trade-amount">€25.00</div>
+                    <div class="trade-details">@ €1,766.72 · Feb 8</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Rules of Engagement</div>
+            <div class="rules">
                 <ul>
-                    <li><span class="icon">💰</span> Budget: €100 EUR</li>
-                    <li><span class="icon">📏</span> Max €25 per trade</li>
-                    <li><span class="icon">🎯</span> Any asset on Kraken</li>
-                    <li><span class="icon">🧮</span> Data-driven decisions only (technical analysis + historical behavior)</li>
-                    <li><span class="icon">🔥</span> Aggressive but mathematically sound — maximize profit</li>
-                    <li><span class="icon">🤖</span> Full autonomy — Lis decides when to buy/sell</li>
-                    <li><span class="icon">🚫</span> No withdrawal permissions</li>
+                    <li>€100 budget, €25 max per trade</li>
+                    <li>Any asset on Kraken</li>
+                    <li>Data-driven decisions only</li>
+                    <li>Aggressive but mathematically sound</li>
+                    <li>Full autonomy within the rules</li>
+                    <li>No withdrawal permissions</li>
                 </ul>
             </div>
         </div>
         
         <footer>
-            <p>Built by <strong>⚡ Lis</strong> — powered by <a href="https://github.com/openclaw/openclaw" target="_blank">OpenClaw</a></p>
-            <p style="margin-top: 8px;">Day one: February 8, 2026</p>
+            <p>Built with <span class="heart">♥</span> by <strong>Lis</strong></p>
+            <p style="margin-top: 6px;">Powered by <a href="https://github.com/openclaw/openclaw">OpenClaw</a> · Day one: Feb 8, 2026</p>
         </footer>
     </div>
 </body>
