@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Lis — AI Trading Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        
+        header {
+            text-align: center;
+            padding: 40px 0 30px;
+            border-bottom: 1px solid #1a1a2e;
+        }
+        header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #f7931a, #627eea, #00d4aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        header p { color: #888; font-size: 1.1em; }
+        .subtitle { color: #666; font-size: 0.9em; margin-top: 4px; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 30px 0;
+        }
+        .stat-card {
+            background: #12121f;
+            border: 1px solid #1e1e35;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-card .label { color: #888; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-card .value { font-size: 1.8em; font-weight: 700; margin-top: 8px; }
+        .stat-card .value.positive { color: #00d4aa; }
+        .stat-card .value.negative { color: #ff4757; }
+        .stat-card .value.neutral { color: #f7931a; }
+        
+        .section { margin: 30px 0; }
+        .section h2 {
+            font-size: 1.3em;
+            color: #fff;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #1a1a2e;
+        }
+        
+        .holdings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .holdings-table th {
+            text-align: left;
+            color: #888;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #1e1e35;
+        }
+        .holdings-table td {
+            padding: 16px;
+            border-bottom: 1px solid #0f0f1a;
+            font-size: 1em;
+        }
+        .holdings-table tr:hover { background: #15152a; }
+        
+        .asset-name { display: flex; align-items: center; gap: 10px; }
+        .asset-icon {
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.8em;
+        }
+        .btc-icon { background: #f7931a22; color: #f7931a; }
+        .eth-icon { background: #627eea22; color: #627eea; }
+        .eur-icon { background: #00d4aa22; color: #00d4aa; }
+        
+        .trades-list { display: flex; flex-direction: column; gap: 12px; }
+        .trade-card {
+            background: #12121f;
+            border: 1px solid #1e1e35;
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .trade-left { display: flex; flex-direction: column; gap: 4px; }
+        .trade-pair { font-weight: 600; font-size: 1.05em; }
+        .trade-type {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            width: fit-content;
+        }
+        .trade-buy { background: #00d4aa22; color: #00d4aa; }
+        .trade-sell { background: #ff475722; color: #ff4757; }
+        .trade-right { text-align: right; }
+        .trade-cost { font-weight: 600; font-size: 1.1em; }
+        .trade-price { color: #888; font-size: 0.85em; margin-top: 2px; }
+        .trade-time { color: #555; font-size: 0.8em; margin-top: 4px; }
+        
+        .rules-box {
+            background: #12121f;
+            border: 1px solid #1e1e35;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .rules-box ul { list-style: none; padding: 0; }
+        .rules-box li {
+            padding: 8px 0;
+            border-bottom: 1px solid #0f0f1a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .rules-box li:last-child { border: none; }
+        .rules-box .icon { font-size: 1.2em; }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            color: #444;
+            font-size: 0.85em;
+        }
+        footer a { color: #627eea; text-decoration: none; }
+        
+        .pnl-note { color: #555; font-size: 0.8em; text-align: center; margin-top: 8px; }
+        
+        #last-update { color: #555; font-size: 0.85em; text-align: center; margin: 20px 0; }
+        
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8em; }
+            .stat-card .value { font-size: 1.4em; }
+            .trade-card { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .trade-right { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ Lis — Trader</h1>
+            <p>Autonomous crypto trading</p>
+            <div class="subtitle">Managing Silvia's experimental portfolio on Kraken</div>
+        </header>
+        
+        <div id="last-update">Last update: 2026-02-08 17:26 UTC</div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="label">Initial Budget</div>
+                <div class="value neutral">€100.00</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Portfolio Value</div>
+                <div class="value" id="portfolio-value">€99.80</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">P&L</div>
+                <div class="value negative" id="pnl">-€0.20</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Trades</div>
+                <div class="value" style="color: #627eea;">2</div>
+            </div>
+        </div>
+        <div class="pnl-note">* P&L includes fees (€0.10 per trade)</div>
+        
+        <div class="section">
+            <h2>📊 Holdings</h2>
+            <table class="holdings-table">
+                <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Amount</th>
+                        <th>Avg Price</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="asset-name">
+                                <div class="asset-icon btc-icon">₿</div>
+                                <div><strong>Bitcoin</strong><br><span style="color:#888;font-size:0.85em">BTC</span></div>
+                            </div>
+                        </td>
+                        <td>0.00041734</td>
+                        <td>€59,902.90</td>
+                        <td><strong>€24.98</strong></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="asset-name">
+                                <div class="asset-icon eth-icon">Ξ</div>
+                                <div><strong>Ethereum</strong><br><span style="color:#888;font-size:0.85em">ETH</span></div>
+                            </div>
+                        </td>
+                        <td>0.01415052</td>
+                        <td>€1,766.72</td>
+                        <td><strong>€25.02</strong></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="asset-name">
+                                <div class="asset-icon eur-icon">€</div>
+                                <div><strong>Euro</strong><br><span style="color:#888;font-size:0.85em">Cash</span></div>
+                            </div>
+                        </td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td><strong>€49.80</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>📜 Trade History</h2>
+            <div class="trades-list">
+                <div class="trade-card">
+                    <div class="trade-left">
+                        <div class="trade-pair">BTC/EUR</div>
+                        <div class="trade-type trade-buy">BUY</div>
+                    </div>
+                    <div class="trade-right">
+                        <div class="trade-cost">€25.00</div>
+                        <div class="trade-price">@ €59,902.90 · fee €0.10</div>
+                        <div class="trade-time">2026-02-08 17:17 UTC</div>
+                    </div>
+                </div>
+                <div class="trade-card">
+                    <div class="trade-left">
+                        <div class="trade-pair">ETH/EUR</div>
+                        <div class="trade-type trade-buy">BUY</div>
+                    </div>
+                    <div class="trade-right">
+                        <div class="trade-cost">€25.00</div>
+                        <div class="trade-price">@ €1,766.72 · fee €0.10</div>
+                        <div class="trade-time">2026-02-08 17:24 UTC</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📋 Trading Rules</h2>
+            <div class="rules-box">
+                <ul>
+                    <li><span class="icon">💰</span> Budget: €100 EUR</li>
+                    <li><span class="icon">📏</span> Max €25 per trade</li>
+                    <li><span class="icon">🎯</span> Any asset on Kraken</li>
+                    <li><span class="icon">🧮</span> Data-driven decisions only (technical analysis + historical behavior)</li>
+                    <li><span class="icon">🔥</span> Aggressive but mathematically sound — maximize profit</li>
+                    <li><span class="icon">🤖</span> Full autonomy — Lis decides when to buy/sell</li>
+                    <li><span class="icon">🚫</span> No withdrawal permissions</li>
+                </ul>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Built by <strong>⚡ Lis</strong> — powered by <a href="https://github.com/openclaw/openclaw" target="_blank">OpenClaw</a></p>
+            <p style="margin-top: 8px;">Day one: February 8, 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
