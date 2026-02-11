@@ -98,6 +98,8 @@
         .dot-kas { background: #49eacb; }
         .dot-hbar { background: #8259ef; }
         .dot-arb { background: #28a0f0; }
+        .dot-degiro { background: #00b386; }
+        .dot-op { background: #ff0420; }
         .dot-cash { background: var(--accent); }
         .holding-name { font-weight: 500; }
         .holding-sub { font-size: 0.85em; color: var(--muted); }
@@ -182,19 +184,20 @@
         <div class="stats">
             <div class="stat">
                 <div class="label">Budget</div>
-                <div class="value">€100</div>
+                <div class="value">€300</div>
+                <div class="sub">Kraken €100 · DEGIRO €200</div>
             </div>
             <div class="stat">
                 <div class="label">Portfolio</div>
-                <div class="value">€45.22</div>
+                <div class="value">€234.65</div>
             </div>
             <div class="stat">
                 <div class="label">P&L</div>
-                <div class="value red">-€54.78</div>
-                <div class="sub">(-54.78%)</div>
+                <div class="value red">-€77.35</div>
+                <div class="sub">(-25.78%)</div>
             </div>
         </div>
-        <div class="update-time"><span class="live-dot"></span>Updated Feb 11, 2026 · 13:06 UTC</div>
+        <div class="update-time"><span class="live-dot"></span>Updated Feb 11, 2026 · 15:52 UTC</div>
         <div class="section">
             <div class="section-title">Holdings</div>
             
@@ -207,7 +210,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="holding-value">€23.69</div>
+                    <div class="holding-value">€23.51</div>
                     <div class="holding-amount">0.00042010 BTC</div>
                 </div>
             </div>
@@ -220,7 +223,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="holding-value">€21.19</div>
+                    <div class="holding-value">€20.96</div>
                     <div class="holding-amount">142.50 OP</div>
                 </div>
             </div>
@@ -228,12 +231,103 @@
                 <div class="holding-left">
                     <div class="holding-dot dot-cash"></div>
                     <div>
-                        <div class="holding-name">Cash</div>
+                        <div class="holding-name">Cash (Kraken)</div>
                         <div class="holding-sub">EUR</div>
                     </div>
                 </div>
                 <div>
                     <div class="holding-value">€0.34</div>
+                    <div class="holding-amount">Available</div>
+                </div>
+            </div>
+            <div class="holding">
+                <div class="holding-left">
+                    <div class="holding-dot dot-degiro"></div>
+                    <div>
+                        <div class="holding-name">Banco Comercial Portugues</div>
+                        <div class="holding-sub">BCP</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="holding-value">€22.65</div>
+                    <div class="holding-amount">25x @ €0.906</div>
+                </div>
+            </div>
+            <div class="holding">
+                <div class="holding-left">
+                    <div class="holding-dot dot-degiro"></div>
+                    <div>
+                        <div class="holding-name">Galp Energia</div>
+                        <div class="holding-sub">GALP</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="holding-value">€17.98</div>
+                    <div class="holding-amount">1x @ €17.980</div>
+                </div>
+            </div>
+            <div class="holding">
+                <div class="holding-left">
+                    <div class="holding-dot dot-degiro"></div>
+                    <div>
+                        <div class="holding-name">Mota Engil</div>
+                        <div class="holding-sub">EGL</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="holding-value">€25.07</div>
+                    <div class="holding-amount">5x @ €5.015</div>
+                </div>
+            </div>
+            <div class="holding">
+                <div class="holding-left">
+                    <div class="holding-dot dot-degiro"></div>
+                    <div>
+                        <div class="holding-name">Navigator Company</div>
+                        <div class="holding-sub">NVG</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="holding-value">€23.81</div>
+                    <div class="holding-amount">7x @ €3.402</div>
+                </div>
+            </div>
+            <div class="holding">
+                <div class="holding-left">
+                    <div class="holding-dot dot-degiro"></div>
+                    <div>
+                        <div class="holding-name">REN Energeticas</div>
+                        <div class="holding-sub">RENE</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="holding-value">€21.96</div>
+                    <div class="holding-amount">6x @ €3.660</div>
+                </div>
+            </div>
+            <div class="holding">
+                <div class="holding-left">
+                    <div class="holding-dot dot-degiro"></div>
+                    <div>
+                        <div class="holding-name">Teixeira Duarte</div>
+                        <div class="holding-sub">TDSA</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="holding-value">€21.36</div>
+                    <div class="holding-amount">40x @ €0.534</div>
+                </div>
+            </div>
+            <div class="holding">
+                <div class="holding-left">
+                    <div class="holding-dot dot-cash"></div>
+                    <div>
+                        <div class="holding-name">Cash (DEGIRO)</div>
+                        <div class="holding-sub">EUR</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="holding-value">€57.00</div>
                     <div class="holding-amount">Available</div>
                 </div>
             </div>
@@ -386,8 +480,8 @@
             <div class="section-title">Rules of Engagement</div>
             <div class="rules">
                 <ul>
-                    <li>€100 Kraken budget, €25 max per trade</li>
-                    <li>Any asset on Kraken</li>
+                    <li>€100 Kraken (crypto) + €200 DEGIRO (stocks)</li>
+                    <li>€25 max per trade, any asset</li>
                     <li>Data-driven decisions only</li>
                     <li>Aggressive but mathematically sound</li>
                     <li>Full autonomy within the rules</li>
